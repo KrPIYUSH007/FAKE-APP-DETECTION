@@ -1,30 +1,50 @@
+import json
+import os
 from similarity import name_similarity
 
-OFFICIAL_APP_NAME = "PhonePe"
-OFFICIAL_PUBLISHER = "PhonePe Pvt Ltd"
-SUSPICIOUS_KEYWORDS = ["update", "pro", "secure", "latest", "cashback"]
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BRANDS_FILE = os.path.join(BASE_DIR, "data", "brands.json")
 
-def calculate_risk(app_name: str, publisher: str) -> int:
+# Load brand configuration
+with open(BRANDS_FILE, "r") as f:
+    BRANDS = json.load(f)
+
+def calculate_risk(app_name: str, publisher: str, brand: str) -> int:
     """
-    Returns a risk score from 0 to 100 using:
-    - name similarity
-    - publisher mismatch
-    - suspicious keywords in app name
+    Multi-brand scoring for PhonePe / Paytm / GPay.
     """
+    brand = brand.lower().strip()
+    if brand not in BRANDS:
+        return 0
+
+    cfg = BRANDS[brand]
+
+    official_name = cfg["official_name"]
+    official_pub = cfg["official_publisher"]
+    keywords = cfg["keywords"]
+    threshold = cfg["similarity_threshold"]
+    aliases = cfg.get("aliases", [])
+
     score = 0
+    name_low = app_name.lower()
 
-    # 1. LOWERED THRESHOLD so fake apps get flagged
-    sim = name_similarity(app_name, OFFICIAL_APP_NAME)
-    if sim > 0.70:    
-        score += 50   
+    # 1. Name similarity to official name
+    sim = name_similarity(app_name, official_name)
+    if sim >= threshold:
+        score += 50
 
-    # 2. Publisher mismatch
-    if publisher != OFFICIAL_PUBLISHER:
+    # 2. Check aliases (PhonePay, Pay tm, Gpay etc)
+    for a in aliases:
+        if a in name_low:
+            score += 30
+            break
+
+    # 3. Publisher mismatch
+    if publisher != official_pub:
         score += 30
 
-    # 3. Suspicious keywords (update, pro, secure…)
-    lower_name = app_name.lower()
-    if any(word in lower_name for word in SUSPICIOUS_KEYWORDS):
+    # 4. Suspicious keywords
+    if any(k in name_low for k in keywords):
         score += 20
 
     return min(score, 100)

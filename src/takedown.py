@@ -1,34 +1,28 @@
-from scoring import OFFICIAL_APP_NAME, OFFICIAL_PUBLISHER
+from brand_config import BRANDS
 
-def generate_takedown_email(app_name: str, package_name: str, publisher: str, risk_score: int) -> str:
-    """
-    Returns a formatted takedown email text.
-    """
-    email = f"""
-Subject: Takedown Request – Fake App Impersonating {OFFICIAL_APP_NAME}
+def generate_takedown_email(app_name, package_name, publisher, risk_score, brand):
+    brand = brand.lower()
+    cfg = BRANDS[brand]
 
-Dear Google Play Support,
+    return f"""
+To: App Store Compliance Team
+Subject: URGENT — Fake {cfg['official_name']} Impersonator Detected
 
-We have detected a suspicious application that appears to impersonate the official {OFFICIAL_APP_NAME} app.
+Dear team,
 
-Official App:
-- Name     : {OFFICIAL_APP_NAME}
-- Publisher: {OFFICIAL_PUBLISHER}
+We have detected a malicious / impersonator app targeting the brand **{cfg['official_name']}**.
 
-Suspicious App:
-- Name     : {app_name}
-- Package  : {package_name}
+App details:
+- App Name: {app_name}
+- Package Name: {package_name}
 - Publisher: {publisher}
 - Risk Score: {risk_score}/100
+- Official Publisher Should Be: {cfg['official_publisher']}
 
-Evidence:
-- Name highly similar to the official app
-- Publisher does not match the official publisher
-- App name may mislead users into thinking this is an official update or premium version
+This app appears to mimic the official {cfg['official_name']} application and may mislead users.
 
-We request you to review and take appropriate action to protect users from possible fraud.
+We request immediate review and removal of this harmful app to prevent fraud or misuse.
 
-Regards,
-Team SpongeBob SquarePants
+Thank you,
+Fake App Detection Team
 """
-    return email.strip("\n")

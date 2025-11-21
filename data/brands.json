@@ -1,0 +1,20 @@
+{
+  "PhonePe": {
+    "official_name": "PhonePe",
+    "official_publisher": "PhonePe Pvt Ltd",
+    "keywords": ["update", "pro", "secure", "latest", "cashback"],
+    "similarity_threshold": 0.70
+  },
+  "Paytm": {
+    "official_name": "Paytm",
+    "official_publisher": "One97 Communications Ltd",
+    "keywords": ["update", "cashback", "pro", "lite", "earn"],
+    "similarity_threshold": 0.70
+  },
+  "GPay": {
+    "official_name": "Google Pay",
+    "official_publisher": "Google LLC",
+    "keywords": ["update", "reward", "pro", "cash", "plus"],
+    "similarity_threshold": 0.65
+  }
+}

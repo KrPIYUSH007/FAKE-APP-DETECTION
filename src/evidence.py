@@ -1,39 +1,37 @@
-from scoring import OFFICIAL_APP_NAME, OFFICIAL_PUBLISHER
+from brand_config import BRANDS
 
 def generate_evidence(row):
-    app = row["app_name"]
-    package = row["package_name"]
-    pub = row["publisher"]
-    score = row["risk_score"]
+    brand = row["brand"].lower()
+    cfg = BRANDS[brand]
 
     reasons = []
 
-    if app.lower() != OFFICIAL_APP_NAME.lower():
-        reasons.append(f"• Name mimics official app '{OFFICIAL_APP_NAME}'")
+    # Reason list
+    if row["publisher"] != cfg["official_publisher"]:
+        reasons.append(f"- Publisher mismatch (found: {row['publisher']}, expected: {cfg['official_publisher']})")
 
-    if pub != OFFICIAL_PUBLISHER:
-        reasons.append(f"• Publisher mismatch: '{pub}' (expected '{OFFICIAL_PUBLISHER}')")
-
-    for keyword in ["update", "pro", "secure", "latest", "cashback"]:
-        if keyword in app.lower():
-            reasons.append(f"• Suspicious keyword found: '{keyword}'")
+    lower_name = row["app_name"].lower()
+    for k in cfg["keywords"]:
+        if k in lower_name:
+            reasons.append(f"- Contains suspicious keyword: '{k}'")
             break
 
-    reason_text = "\n".join(reasons)
+    for alias in cfg.get("aliases", []):
+        if alias in lower_name:
+            reasons.append(f"- Matches known typosquat pattern: '{alias}'")
+            break
 
-    return f"""
-=============================
-FAKE APP EVIDENCE REPORT
-=============================
+    text = f"""
+==============================
+EVIDENCE REPORT — {row['app_name']}
+Brand: {brand.upper()}
+Risk Score: {row['risk_score']}
+Package: {row['package_name']}
+Publisher: {row['publisher']}
+==============================
 
-App Name       : {app}
-Package        : {package}
-Publisher      : {pub}
-Risk Score     : {score}/100
-
-Reasons for Suspicion:
-{reason_text}
-
--------------------------------------------
+Reasons:
+{chr(10).join(reasons) if reasons else "No suspicious indicators found"}
 
 """
+    return text
