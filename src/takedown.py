@@ -29,6 +29,6 @@ Evidence:
 We request you to review and take appropriate action to protect users from possible fraud.
 
 Regards,
-Hackathon Team
+Team SpongeBob SquarePants
 """
     return email.strip("\n")
