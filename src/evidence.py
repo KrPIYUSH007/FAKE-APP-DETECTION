@@ -1,48 +1,39 @@
 from scoring import OFFICIAL_APP_NAME, OFFICIAL_PUBLISHER
 
-def generate_evidence(row) -> str:
-    """
-    Takes a pandas row and returns a formatted evidence string.
-    """
+def generate_evidence(row):
+    app = row["app_name"]
+    package = row["package_name"]
+    pub = row["publisher"]
+    score = row["risk_score"]
+
     reasons = []
 
-    app_name = row["app_name"]
-    publisher = row["publisher"]
-    risk_score = row["risk_score"]
+    if app.lower() != OFFICIAL_APP_NAME.lower():
+        reasons.append(f"• Name mimics official app '{OFFICIAL_APP_NAME}'")
 
-    # Reason 1: similar name
-    if app_name.lower().replace(" ", "") != OFFICIAL_APP_NAME.lower().replace(" ", ""):
-        reasons.append(f'- Name is similar to official app "{OFFICIAL_APP_NAME}"')
+    if pub != OFFICIAL_PUBLISHER:
+        reasons.append(f"• Publisher mismatch: '{pub}' (expected '{OFFICIAL_PUBLISHER}')")
 
-    # Reason 2: publisher mismatch
-    if publisher != OFFICIAL_PUBLISHER:
-        reasons.append(f'- Publisher mismatch: "{publisher}" vs official "{OFFICIAL_PUBLISHER}"')
+    for keyword in ["update", "pro", "secure", "latest", "cashback"]:
+        if keyword in app.lower():
+            reasons.append(f"• Suspicious keyword found: '{keyword}'")
+            break
 
-    # Reason 3: keywords
-    suspicious_words = []
-    for word in ["update", "pro", "secure", "latest", "cashback"]:
-        if word in app_name.lower():
-            suspicious_words.append(word)
-    if suspicious_words:
-        reasons.append(f'- Contains suspicious keywords in app name: {", ".join(suspicious_words)}')
+    reason_text = "\n".join(reasons)
 
-    if not reasons:
-        reasons.append("- Heuristic detection triggered, but no specific reason recorded.")
-
-    reasons_text = "\n".join(reasons)
-
-    evidence = f"""
+    return f"""
 =============================
-EVIDENCE FOR SUSPECT APP
+FAKE APP EVIDENCE REPORT
 =============================
 
-App Name   : {app_name}
-Package    : {row["package_name"]}
-Publisher  : {publisher}
-Risk Score : {risk_score}
+App Name       : {app}
+Package        : {package}
+Publisher      : {pub}
+Risk Score     : {score}/100
 
-Reasons:
-{reasons_text}
+Reasons for Suspicion:
+{reason_text}
+
+-------------------------------------------
 
 """
-    return evidence

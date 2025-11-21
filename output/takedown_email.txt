@@ -1,0 +1,25 @@
+Subject: Takedown Request – Fake App Impersonating PhonePe
+
+Dear Google Play Support,
+
+We have detected a suspicious application that appears to impersonate the official PhonePe app.
+
+Official App:
+- Name     : PhonePe
+- Publisher: PhonePe Pvt Ltd
+
+Suspicious App:
+- Name     : PhonePe Pro
+- Package  : com.phonepe.pro
+- Publisher: FastPay Apps
+- Risk Score: 100/100
+
+Evidence:
+- Name highly similar to the official app
+- Publisher does not match the official publisher
+- App name may mislead users into thinking this is an official update or premium version
+
+We request you to review and take appropriate action to protect users from possible fraud.
+
+Regards,
+Hackathon Team

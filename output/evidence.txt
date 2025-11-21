@@ -1,0 +1,138 @@
+
+=============================
+FAKE APP EVIDENCE REPORT
+=============================
+
+App Name       : PhonePe Pro
+Package        : com.phonepe.pro
+Publisher      : FastPay Apps
+Risk Score     : 100/100
+
+Reasons for Suspicion:
+• Name mimics official app 'PhonePe'
+• Publisher mismatch: 'FastPay Apps' (expected 'PhonePe Pvt Ltd')
+• Suspicious keyword found: 'pro'
+
+-------------------------------------------
+
+
+
+=============================
+FAKE APP EVIDENCE REPORT
+=============================
+
+App Name       : PhonePe Lite
+Package        : com.phonepe.lite
+Publisher      : PhonePe Pvt Ltd
+Risk Score     : 50/100
+
+Reasons for Suspicion:
+• Name mimics official app 'PhonePe'
+
+-------------------------------------------
+
+
+
+=============================
+FAKE APP EVIDENCE REPORT
+=============================
+
+App Name       : PhonePe Latest Version
+Package        : com.phonepe.latest
+Publisher      : App Update Center
+Risk Score     : 50/100
+
+Reasons for Suspicion:
+• Name mimics official app 'PhonePe'
+• Publisher mismatch: 'App Update Center' (expected 'PhonePe Pvt Ltd')
+• Suspicious keyword found: 'latest'
+
+-------------------------------------------
+
+
+
+=============================
+FAKE APP EVIDENCE REPORT
+=============================
+
+App Name       : PhonePe Update
+Package        : com.phonepe.update
+Publisher      : Free Utility Apps
+Risk Score     : 50/100
+
+Reasons for Suspicion:
+• Name mimics official app 'PhonePe'
+• Publisher mismatch: 'Free Utility Apps' (expected 'PhonePe Pvt Ltd')
+• Suspicious keyword found: 'update'
+
+-------------------------------------------
+
+
+
+=============================
+FAKE APP EVIDENCE REPORT
+=============================
+
+App Name       : PhonePe
+Package        : com.phonepe.app
+Publisher      : PhonePe Pvt Ltd
+Risk Score     : 50/100
+
+Reasons for Suspicion:
+
+
+-------------------------------------------
+
+
+
+=============================
+FAKE APP EVIDENCE REPORT
+=============================
+
+App Name       : PhonePe Cashback Pro
+Package        : com.phonepe.cashback
+Publisher      : Reward Max Studio
+Risk Score     : 50/100
+
+Reasons for Suspicion:
+• Name mimics official app 'PhonePe'
+• Publisher mismatch: 'Reward Max Studio' (expected 'PhonePe Pvt Ltd')
+• Suspicious keyword found: 'pro'
+
+-------------------------------------------
+
+
+
+=============================
+FAKE APP EVIDENCE REPORT
+=============================
+
+App Name       : phonepay
+Package        : com.phonepe.app
+Publisher      : PhonePe Pvt Ltd
+Risk Score     : 50/100
+
+Reasons for Suspicion:
+• Name mimics official app 'PhonePe'
+
+-------------------------------------------
+
+
+
+=============================
+FAKE APP EVIDENCE REPORT
+=============================
+
+App Name       : PhonePe Secure
+Package        : com.phonepe.secure
+Publisher      : Random Dev Labs
+Risk Score     : 50/100
+
+Reasons for Suspicion:
+• Name mimics official app 'PhonePe'
+• Publisher mismatch: 'Random Dev Labs' (expected 'PhonePe Pvt Ltd')
+• Suspicious keyword found: 'secure'
+
+-------------------------------------------
+
+

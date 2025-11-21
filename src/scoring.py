@@ -13,19 +13,18 @@ def calculate_risk(app_name: str, publisher: str) -> int:
     """
     score = 0
 
-    # 1. Name similarity with official app
+    # 1. LOWERED THRESHOLD so fake apps get flagged
     sim = name_similarity(app_name, OFFICIAL_APP_NAME)
-    if sim > 0.8:
-        score += 50   # very similar name
+    if sim > 0.70:    
+        score += 50   
 
     # 2. Publisher mismatch
     if publisher != OFFICIAL_PUBLISHER:
-        score += 30   # not official publisher
+        score += 30
 
-    # 3. Suspicious keywords
+    # 3. Suspicious keywords (update, pro, secure…)
     lower_name = app_name.lower()
     if any(word in lower_name for word in SUSPICIOUS_KEYWORDS):
-        score += 20   # contains “update”, “pro”, etc.
+        score += 20
 
-    # Cap max at 100
     return min(score, 100)

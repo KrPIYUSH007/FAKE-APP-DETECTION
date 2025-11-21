@@ -1,13 +1,14 @@
 app_name,package_name,publisher,is_official,risk_score
-PhonePe,com.phonepe.app,PhonePe Pvt Ltd,YES,50
+PhonePe Pro,com.phonepe.pro,FastPay Apps,NO,100
+PhonePe Lite,com.phonepe.lite,PhonePe Pvt Ltd,YES,50
 PhonePe Latest Version,com.phonepe.latest,App Update Center,NO,50
 PhonePe Update,com.phonepe.update,Free Utility Apps,NO,50
-PhonePe Pro,com.phonepe.pro,FastPay Apps,NO,50
+PhonePe,com.phonepe.app,PhonePe Pvt Ltd,YES,50
 PhonePe Cashback Pro,com.phonepe.cashback,Reward Max Studio,NO,50
+phonepay,com.phonepe.app,PhonePe Pvt Ltd,NO,50
 PhonePe Secure,com.phonepe.secure,Random Dev Labs,NO,50
 PhonePay Lite,com.phonepay.lite,Secure Pay Studio,NO,30
-PhonePe Business,com.phonepe.business,PhonePe Pvt Ltd,YES,0
-PhonePe Merchant,com.phonepe.merchant,PhonePe Pvt Ltd,YES,0
-PhonePe Lite,com.phonepe.lite,PhonePe Pvt Ltd,YES,0
 PhonePe Switch,com.phonepe.switch,PhonePe Pvt Ltd,YES,0
+PhonePe Merchant,com.phonepe.merchant,PhonePe Pvt Ltd,YES,0
+PhonePe Business,com.phonepe.business,PhonePe Pvt Ltd,YES,0
 PhonePe Scanner,com.phonepe.scanner,PhonePe Pvt Ltd,YES,0
