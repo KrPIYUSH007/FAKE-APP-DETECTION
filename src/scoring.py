@@ -1,50 +1,67 @@
-import json
-import os
-from similarity import name_similarity
+# src/scoring.py
+# Multi‑Brand Risk Scoring (FINAL VERSION)
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BRANDS_FILE = os.path.join(BASE_DIR, "data", "brands.json")
+from src.brand_config import BRANDS
+from src.similarity import similarity
 
-# Load brand configuration
-with open(BRANDS_FILE, "r") as f:
-    BRANDS = json.load(f)
 
 def calculate_risk(app_name: str, publisher: str, brand: str) -> int:
     """
-    Multi-brand scoring for PhonePe / Paytm / GPay.
+    Multi-brand risk scoring for PhonePe / Paytm / GPay.
+    Uses:
+    - name similarity
+    - publisher mismatch
+    - suspicious keywords
+    - alias / typosquat detection
     """
+
     brand = brand.lower().strip()
-    if brand not in BRANDS:
-        return 0
+    cfg = BRANDS.get(brand)
 
-    cfg = BRANDS[brand]
-
-    official_name = cfg["official_name"]
-    official_pub = cfg["official_publisher"]
-    keywords = cfg["keywords"]
-    threshold = cfg["similarity_threshold"]
-    aliases = cfg.get("aliases", [])
+    # If brand unknown → consider highly risky
+    if not cfg:
+        return 100
 
     score = 0
     name_low = app_name.lower()
+    publisher_low = publisher.lower().strip()
 
-    # 1. Name similarity to official name
-    sim = name_similarity(app_name, official_name)
-    if sim >= threshold:
-        score += 50
+    # -------------------------
+    # 1. Name similarity vs official names
+    # -------------------------
+    similarities = []
+    for off in cfg.get("official_names", []):
+        similarities.append(similarity(app_name, off))
 
-    # 2. Check aliases (PhonePay, Pay tm, Gpay etc)
-    for a in aliases:
-        if a in name_low:
-            score += 30
-            break
+    max_sim = max(similarities) if similarities else 0
 
-    # 3. Publisher mismatch
-    if publisher != official_pub:
+    if max_sim < 60:
         score += 30
-
-    # 4. Suspicious keywords
-    if any(k in name_low for k in keywords):
+    if max_sim < 40:
         score += 20
 
+    # -------------------------
+    # 2. Publisher mismatch
+    # -------------------------
+    official_pub = cfg.get("official_publisher", "").lower()
+    if official_pub and publisher_low != official_pub:
+        score += 30
+
+    # -------------------------
+    # 3. Suspicious keywords in app name
+    # -------------------------
+    for k in cfg.get("keywords", []):
+        if k.lower() in name_low:
+            score += 10
+
+    # -------------------------
+    # 4. Alias / typosquat patterns
+    # -------------------------
+    for alias in cfg.get("aliases", []):
+        if alias.lower() in name_low:
+            score += 20
+
+    # -------------------------
+    # Bound score (0–100)
+    # -------------------------
     return min(score, 100)

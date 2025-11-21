@@ -1,14 +1,51 @@
-app_name,package_name,publisher,is_official
-PhonePe,com.phonepe.app,PhonePe Pvt Ltd,YES
-PhonePe Business,com.phonepe.business,PhonePe Pvt Ltd,YES
-PhonePe Lite,com.phonepe.lite,PhonePe Pvt Ltd,YES
-PhonePe Merchant,com.phonepe.merchant,PhonePe Pvt Ltd,YES
-PhonePe Switch,com.phonepe.switch,PhonePe Pvt Ltd,YES
-PhonePe Scanner,com.phonepe.scanner,PhonePe Pvt Ltd,YES
-PhonePe Update,com.phonepe.update,Free Utility Apps,NO
-PhonePe Pro,com.phonepe.pro,FastPay Apps,NO
-PhonePay Lite,com.phonepay.lite,Secure Pay Studio,NO
-PhonePe Secure,com.phonepe.secure,Random Dev Labs,NO
-PhonePe Latest Version,com.phonepe.latest,App Update Center,NO
-PhonePe Cashback Pro,com.phonepe.cashback,Reward Max Studio,NO
-phonepay,com.phonepe.app,PhonePe Pvt Ltd,NO
+app_name,package_name,publisher,is_official,brand
+
+# -----------------------------
+# PHONEPE (Official)
+# -----------------------------
+PhonePe,com.phonepe.app,PhonePe Pvt Ltd,YES,phonepe
+PhonePe Business,com.phonepe.business,PhonePe Pvt Ltd,YES,phonepe
+PhonePe Lite,com.phonepe.lite,PhonePe Pvt Ltd,YES,phonepe
+PhonePe Merchant,com.phonepe.merchant,PhonePe Pvt Ltd,YES,phonepe
+PhonePe Switch,com.phonepe.switch,PhonePe Pvt Ltd,YES,phonepe
+PhonePe Scanner,com.phonepe.scanner,PhonePe Pvt Ltd,YES,phonepe
+
+# -----------------------------
+# PHONEPE (Fake / Suspicious)
+# -----------------------------
+PhonePe Update,com.phonepe.update,Free Utility Apps,NO,phonepe
+PhonePe Pro,com.phonepe.pro,FastPay Apps,NO,phonepe
+PhonePay Lite,com.phonepay.lite,Secure Pay Studio,NO,phonepe
+PhonePe Secure,com.phonepe.secure,Random Dev Labs,NO,phonepe
+PhonePe Latest Version,com.phonepe.latest,App Update Center,NO,phonepe
+PhonePe Cashback Pro,com.phonepe.cashback,Reward Max Studio,NO,phonepe
+phonepay,com.phonepay.app,PhonePe Pvt Ltd,NO,phonepe
+
+# -----------------------------
+# PAYTM (Official)
+# -----------------------------
+Paytm,net.one97.paytm,One97 Communications Ltd,YES,paytm
+Paytm Lite,net.one97.paytm.lite,One97 Communications Ltd,YES,paytm
+Paytm for Business,net.one97.paytm.business,One97 Communications Ltd,YES,paytm
+
+# -----------------------------
+# PAYTM (Fake / Suspicious)
+# -----------------------------
+Paytm Cashback Pro,net.one97.paytm.cashback,Reward Max Studio,NO,paytm
+Paytm Rewards,com.paytm.rewards,Random Dev Labs,NO,paytm
+Paytm Update Guide,com.paytm.updateguide,Utility Helper Apps,NO,paytm
+Paytm Wallet Add Money,net.one97.paytm.addmoney,Earn Max Studio,NO,paytm
+
+# -----------------------------
+# GPAY (Official)
+# -----------------------------
+Google Pay,com.google.android.apps.nbu.paisa.user,Google LLC,YES,gpay
+GPay India,com.google.android.apps.gpay,Google LLC,YES,gpay
+
+# -----------------------------
+# GPAY (Fake / Suspicious)
+# -----------------------------
+GPay Rewards,com.gpay.rewards,Fake Rewards Inc,NO,gpay
+GPay Secure,com.gpay.secure,Secure Pay Studio,NO,gpay
+GPay Cashback Pro,com.googlepay.cashback,Reward Max Studio,NO,gpay
+Google Pay Update,com.gpay.update,Update Center Apps,NO,gpay

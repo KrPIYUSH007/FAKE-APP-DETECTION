@@ -1,37 +1,58 @@
-from brand_config import BRANDS
+# src/evidence.py
+
+from src.brand_config import BRANDS
 
 def generate_evidence(row):
     brand = row["brand"].lower()
-    cfg = BRANDS[brand]
+    cfg = BRANDS.get(brand, {})
 
+    app = row["app_name"]
+    pkg = row["package_name"]
+    pub = row["publisher"]
+    score = row["risk_score"]
+
+    lower_name = app.lower()
     reasons = []
 
-    # Reason list
-    if row["publisher"] != cfg["official_publisher"]:
-        reasons.append(f"- Publisher mismatch (found: {row['publisher']}, expected: {cfg['official_publisher']})")
+    # ---------------------------
+    # 1. Publisher mismatch
+    # ---------------------------
+    official_pub = cfg.get("official_publisher", "").lower()
+    if official_pub and pub.lower() != official_pub:
+        reasons.append(
+            f"- Publisher mismatch (found: '{pub}', expected: '{cfg.get('official_publisher', 'N/A')}')"
+        )
 
-    lower_name = row["app_name"].lower()
-    for k in cfg["keywords"]:
+    # ---------------------------
+    # 2. Suspicious keywords
+    # ---------------------------
+    for k in cfg.get("keywords", []):
         if k in lower_name:
             reasons.append(f"- Contains suspicious keyword: '{k}'")
             break
 
+    # ---------------------------
+    # 3. Typosquat / Alias match
+    # ---------------------------
     for alias in cfg.get("aliases", []):
         if alias in lower_name:
             reasons.append(f"- Matches known typosquat pattern: '{alias}'")
             break
 
-    text = f"""
+    # ---------------------------
+    # Format output report
+    # ---------------------------
+    report = f"""
 ==============================
-EVIDENCE REPORT — {row['app_name']}
+EVIDENCE REPORT — {app}
 Brand: {brand.upper()}
-Risk Score: {row['risk_score']}
-Package: {row['package_name']}
-Publisher: {row['publisher']}
+Risk Score: {score}
+Package: {pkg}
+Publisher: {pub}
 ==============================
 
 Reasons:
-{chr(10).join(reasons) if reasons else "No suspicious indicators found"}
+{chr(10).join(reasons) if reasons else "No suspicious indicators found."}
 
 """
-    return text
+    return report

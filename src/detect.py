@@ -1,55 +1,64 @@
 #!/usr/bin/env python3
 """
-Multi‑Brand Fake App Detection (PhonePe / Paytm / GPay)
+Multi‑Brand Fake App Detection
+(PhonePe / Paytm / GPay)
 Batch detection script — NOT the CLI.
 """
 
 import os
 import pandas as pd
 
-from colors import GREEN, RED, YELLOW, CYAN, RESET
-from scoring import calculate_risk
-from evidence import generate_evidence
-from takedown import generate_takedown_email
+# Correct imports for running from project root
+from src.colors import GREEN, RED, YELLOW, CYAN, RESET
+from src.scoring import calculate_risk
+from src.evidence import generate_evidence
+from src.takedown import generate_takedown_email
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_PATH = os.path.join(BASE_DIR, "data", "apps.csv")
-OUTPUT_DIR = os.path.join(BASE_DIR, "output")
+# Paths
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))        # detects/scripts folder
+ROOT_DIR = os.path.dirname(BASE_DIR)                         # project root
+DATA_PATH = os.path.join(ROOT_DIR, "data", "apps.csv")
+OUTPUT_DIR = os.path.join(ROOT_DIR, "output")
 
 
 def main():
     print(f"{CYAN}\n🚀 Running Multi‑Brand Fake App Detection...\n{RESET}")
 
-    # ensure output folder exists
+    # Ensure output folder exists
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    # load CSV (MUST include: app_name, package_name, publisher, brand)
+    # Load CSV
+    if not os.path.exists(DATA_PATH):
+        print(f"{RED}❌ ERROR: apps.csv not found at {DATA_PATH}{RESET}")
+        return
+
     df = pd.read_csv(DATA_PATH)
 
+    # Required columns
     required_cols = {"app_name", "package_name", "publisher", "brand"}
-    if not required_cols.issubset(set(df.columns)):
+    if not required_cols.issubset(df.columns):
         print(f"{RED}❌ ERROR: CSV missing required columns: {required_cols}{RESET}")
         return
 
-    # compute risk using the NEW multi‑brand scoring
+    # ---- Compute multi‑brand risk score ----
     df["risk_score"] = df.apply(
         lambda row: calculate_risk(
             row["app_name"],
             row["publisher"],
-            row["brand"].lower().strip(),
+            row["brand"].lower().strip()
         ),
         axis=1
     )
 
-    # sort results
+    # ---- Sort by risk ----
     df_sorted = df.sort_values(by="risk_score", ascending=False)
     results_path = os.path.join(OUTPUT_DIR, "results.csv")
     df_sorted.to_csv(results_path, index=False)
 
     print(f"{GREEN}✔ Detection complete!{RESET}")
-    print(f"{YELLOW}Results saved to:{RESET} {results_path}\n")
+    print(f"{YELLOW}📄 Results saved to:{RESET} {results_path}\n")
 
-    # suspicious threshold
+    # ---- Filter suspicious apps ----
     SUSPICIOUS_THRESHOLD = 50
     suspicious = df_sorted[df_sorted["risk_score"] >= SUSPICIOUS_THRESHOLD]
 
@@ -57,17 +66,17 @@ def main():
         print(f"{RED}❗ No suspicious apps found with score ≥ {SUSPICIOUS_THRESHOLD}{RESET}")
         return
 
-    # generate evidence file
+    # ---- Generate Evidence File ----
     evidence_path = os.path.join(OUTPUT_DIR, "evidence.txt")
     with open(evidence_path, "w", encoding="utf-8") as f:
         for _, row in suspicious.iterrows():
-            ev = generate_evidence(row)
-            f.write(ev + "\n")
+            f.write(generate_evidence(row) + "\n\n")
 
     print(f"{GREEN}✔ Evidence file generated:{RESET} {evidence_path}")
 
-    # generate takedown email for TOP suspicious app
+    # ---- Generate Takedown Email for Top App ----
     top = suspicious.iloc[0]
+
     email_text = generate_takedown_email(
         app_name=top["app_name"],
         package_name=top["package_name"],

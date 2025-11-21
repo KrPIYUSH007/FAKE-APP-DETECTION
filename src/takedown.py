@@ -1,27 +1,40 @@
-from brand_config import BRANDS
+# src/takedown.py
+# Multi‑Brand Takedown Email Generator (FINAL VERSION)
+
+from src.brand_config import BRANDS
+
 
 def generate_takedown_email(app_name, package_name, publisher, risk_score, brand):
-    brand = brand.lower()
-    cfg = BRANDS[brand]
+    brand = brand.lower().strip()
+
+    cfg = BRANDS.get(brand, {})
+
+    # Official names may be a list — choose the primary display name
+    official_display = cfg.get("official_names", ["Unknown Brand"])[0]
+    official_pub = cfg.get("official_publisher", "N/A")
 
     return f"""
 To: App Store Compliance Team
-Subject: URGENT — Fake {cfg['official_name']} Impersonator Detected
+Subject: URGENT — Fake {official_display} Impersonator Detected
 
-Dear team,
+Dear Team,
 
-We have detected a malicious / impersonator app targeting the brand **{cfg['official_name']}**.
+We have detected a potentially fraudulent or impersonator application targeting the brand **{official_display}**.
 
-App details:
+The following suspicious app has been flagged by our Fake App Detection System:
+
+App Details:
 - App Name: {app_name}
 - Package Name: {package_name}
 - Publisher: {publisher}
 - Risk Score: {risk_score}/100
-- Official Publisher Should Be: {cfg['official_publisher']}
+- Expected Official Publisher: {official_pub}
 
-This app appears to mimic the official {cfg['official_name']} application and may mislead users.
+Based on multiple indicators (publisher mismatch, naming similarity, suspicious keywords, and typosquatting patterns),
+this application is likely attempting to impersonate the legitimate {official_display} app.
 
-We request immediate review and removal of this harmful app to prevent fraud or misuse.
+We request an immediate review and appropriate action (removal / suspension) to protect users from fraud, phishing,
+or unauthorized data collection.
 
 Thank you,
 Fake App Detection Team

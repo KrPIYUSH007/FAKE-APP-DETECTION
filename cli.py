@@ -19,9 +19,9 @@ if SRC_DIR not in sys.path:
     sys.path.insert(0, SRC_DIR)
 
 # ---------- Import project modules ----------
-from scoring import calculate_risk
-from evidence import generate_evidence
-from takedown import generate_takedown_email
+from src.scoring import calculate_risk
+from src.evidence import generate_evidence
+from src.takedown import generate_takedown_email
 
 # ---------- File paths ----------
 DATA_PATH = os.path.join(ROOT, "data", "apps.csv")
@@ -33,17 +33,15 @@ TAKEDOWN_PATH = os.path.join(OUTPUT_DIR, "takedown_email.txt")
 # Default threshold
 THRESHOLD = 50
 
-# Current brand (only used for manual app check)
+# Current brand (used only for manual app check)
 CURRENT_BRAND = "phonepe"
 
-
 # ============================================================
-# Utility Functions
+# UTILITY FUNCTIONS
 # ============================================================
 
 def ensure_output_dir():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
-
 
 def load_data():
     if not os.path.exists(DATA_PATH):
@@ -51,9 +49,8 @@ def load_data():
         return pd.DataFrame()
     return pd.read_csv(DATA_PATH)
 
-
 # ============================================================
-# BRAND SWITCHER (NEW)
+# BRAND SWITCHER
 # ============================================================
 
 def choose_brand():
@@ -75,9 +72,8 @@ def choose_brand():
 
     print(GREEN + f"\nCurrent brand for manual checks: {CURRENT_BRAND.upper()}\n" + RESET)
 
-
 # ============================================================
-# 1. RUN DETECTION (Multi‑Brand)
+# 1. RUN DETECTION
 # ============================================================
 
 def run_detection():
@@ -106,7 +102,6 @@ def run_detection():
     print(GREEN + f"\n[+] Detection complete — saved to {RESULTS_PATH}\n" + RESET)
     return df_sorted
 
-
 # ============================================================
 # 2. SHOW RESULTS
 # ============================================================
@@ -123,7 +118,6 @@ def show_results(df=None, top_n=20):
     print(df.head(top_n)[["app_name", "package_name", "brand", "publisher", "risk_score"]]
           .to_string(index=False))
     print()
-
 
 # ============================================================
 # 3. GENERATE EVIDENCE
@@ -151,7 +145,6 @@ def generate_evidence_files(df=None):
 
     print(GREEN + f"[+] Evidence saved to: {EVIDENCE_PATH}\n" + RESET)
 
-
 # ============================================================
 # 4. SHOW EVIDENCE
 # ============================================================
@@ -164,7 +157,6 @@ def show_evidence_file():
     print(MAGENTA + "\n---- EVIDENCE PREVIEW ----\n" + RESET)
     print(open(EVIDENCE_PATH, "r", encoding="utf-8").read())
     print(MAGENTA + "\n---- END ----\n" + RESET)
-
 
 # ============================================================
 # 5. GENERATE TAKEDOWN EMAIL
@@ -195,15 +187,14 @@ def generate_takedown_for_top(df=None):
     )
 
     ensure_output_dir()
-    with open(TAKEDOWN_PATH, "w") as f:
+    with open(TAKEDOWN_PATH, "w", encoding="utf-8") as f:
         f.write(email)
 
     print(GREEN + f"[+] Takedown email saved: {TAKEDOWN_PATH}\n" + RESET)
     print(email)
 
-
 # ============================================================
-# 6. MANUAL SINGLE APP CHECK (now multi-brand)
+# 6. MANUAL SINGLE APP CHECK
 # ============================================================
 
 def check_single_app():
@@ -216,10 +207,10 @@ def check_single_app():
     score = calculate_risk(app_name, publisher, CURRENT_BRAND)
 
     print(YELLOW + "\n--- ANALYSIS ---" + RESET)
-    print(f"App Name   : {app_name}")
-    print(f"Publisher  : {publisher}")
-    print(f"Brand      : {CURRENT_BRAND.upper()}")
-    print(GREEN + f"Risk Score : {score}/100\n" + RESET)
+    print(f"App Name    : {app_name}")
+    print(f"Publisher   : {publisher}")
+    print(f"Brand       : {CURRENT_BRAND.upper()}")
+    print(GREEN + f"Risk Score  : {score}/100\n" + RESET)
 
     row = {
         "app_name": app_name,
@@ -231,7 +222,6 @@ def check_single_app():
 
     print(MAGENTA + "\n--- Evidence ---\n" + RESET)
     print(generate_evidence(row))
-
 
 # ============================================================
 # MAIN MENU
@@ -267,7 +257,7 @@ def interactive_menu():
         elif choice == "4": show_evidence_file()
         elif choice == "5": generate_takedown_for_top(df)
         elif choice == "6":
-            THRESHOLD = int(input("Enter new threshold: "))
+            THRESHOLD = int(input("Enter new threshold (0–100): "))
         elif choice == "7":
             df = load_data()
             print(GREEN + f"Reloaded CSV: {len(df)} rows" + RESET)
@@ -280,7 +270,6 @@ def interactive_menu():
             break
         else:
             print(RED + "Invalid option." + RESET)
-
 
 if __name__ == "__main__":
     interactive_menu()
