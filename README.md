@@ -1,9 +1,9 @@
-⭐ 📱 PhonePe Fake App Detection System
+ Fake App Detection System
 Identify Fake / Impersonator Apps Targeting PhonePe
 
 A rule‑based PhonePe app fraud detection engine powered by Python.
 
-📘 Overview
+ Overview
 The PhonePe Fake App Detection System analyzes app metadata to find fake or impersonator apps pretending to be PhonePe on app stores.
 
 It assigns a risk score (0–100) based on:
@@ -27,7 +27,7 @@ The tool also generates:
 
 This project includes a clean CLI interface.
 
-📁 Project Structure
+ Project Structure
 FAKE-APP-DETECTION/
 │
 ├── data/
@@ -126,7 +126,7 @@ PhonePe Cashback,com.fake.reward,Reward Lab,phonepe
 Phone Pe UPI Guide,com.phonepe.upi.guide,Guide Studio,phonepe
 ✔ brand must always be: phonepe
 
-⚙️ Customization
+ Customization
 PhonePe rules live in:
 
 src/brand_config.py
@@ -138,7 +138,7 @@ Example:
     "aliases": ["phonepay", "phone pe", "fonepe"],
     "keywords": ["reward", "cashback", "secure", "update"]
 }
-🎯 Future Enhancements
+ Future Enhancements
 GUI (Tkinter / PyQt / CustomTkinter)
 
 Real-time Play Store scraper
@@ -147,7 +147,7 @@ Image/icon similarity detection
 
 Machine learning fraud detection
 
-👥 Contributors
+Contributors
 Name	                                    Role	                              GitHub
 Omkar Kumar	                          Developer Head	                      https://github.com/omkarrkr
 Niketh P	                          Developer & Testing	                  https://github.com/nikethp33 
@@ -155,5 +155,4 @@ Paleti Hithaishi Hrushikesh	          Dataset Handling & Documentation	      htt
 Piyush Kumar	                      Project Lead & Developer	              https://github.com/KrPIYUSH007
 
 
-📝 License
-Licensed under MIT License — free to use, modify, and distribute.
+
